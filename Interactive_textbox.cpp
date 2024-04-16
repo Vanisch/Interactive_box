@@ -3,6 +3,7 @@
 #include <conio.h>
 #include <thread> 
 #include <chrono>
+#include <string>
 
 
 using namespace std::chrono_literals;
@@ -29,17 +30,41 @@ void Write() {
     pos.X = 30;
     pos.Y = 10;
     SetConsoleCursorPosition(console, pos);
-    int input{ 0 };
+    int input = 0;
     while (input != 27)
     {
         if (_kbhit())
         {
             input = _getch();
-            if (pos.X <= 61 && input!=8 && 32<=input) {
-                pos.X++;
-                cout << input;
+            if (input == 224 || input == 0) {
+                switch (_getch()) {
+                case 8:
+                    if (pos.X > 30) {
+                        pos.X -= 1;
+                    }
+                    SetConsoleCursorPosition(console, pos);
+                    cout << char(0);
+                    break;
+                case 75:
+                    if (pos.X > 30) {
+                        pos.X-=1;
+                    }
+                    SetConsoleCursorPosition(console, pos);
+                    break;
+                case 77:
+                    if (pos.X <= 61) {
+                        pos.X++;
+                    }
+                    SetConsoleCursorPosition(console, pos);
+                    break;
+                }
             }
-            
+            else {
+                if (pos.X <= 61 && 30<=pos.X && 32 <= input && input <= 255) {
+                    pos.X++;
+                    cout << char(input);
+                }
+            }
         }
     }
 }
